@@ -1,0 +1,4 @@
+include:
+  - project: 'homelte_dev/ms/pipelines'
+    ref: master
+    file: '.gitlab-ci.yml'

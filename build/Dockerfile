@@ -1,0 +1,14 @@
+FROM aristorinjuang/go-builder AS BUILDER
+ARG MACHINE=${MACHINE}
+ARG USER=${USER}
+ARG PASSWORD=${PASSWORD}
+RUN echo "machine $MACHINE login $USER password $PASSWORD" > ~/.netrc
+COPY . .
+RUN go build -o app ./cmd/app/main.go
+
+FROM aristorinjuang/go-production
+ENV TZ=Asia/Jakarta
+COPY --from=BUILDER /app/app .
+RUN chgrp -R 0 /app
+RUN chmod -R g=u /app
+CMD ["./app"]
